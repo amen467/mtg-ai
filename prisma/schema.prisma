@@ -33,6 +33,7 @@ model Card {
 
   printings        Printing[] @relation("CardPrintings")
   rulings Ruling[] @relation("CardRulings")
+  legalities CardLegality[] @relation("CardLegalities")
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -107,4 +108,23 @@ model ReleaseNote {
   @@index([setCode])
   @@index([cardName])
   @@index([releaseDate])
+}
+
+model CardLegality {
+  id          String   @id
+  cardId      String
+  format      String
+  status      String
+  effectiveAt DateTime
+  sourceUrl   String?
+
+  card        Card     @relation("CardLegalities", fields: [cardId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([cardId, format, effectiveAt])
+  @@index([cardId])
+  @@index([format])
+  @@index([effectiveAt])
 }
