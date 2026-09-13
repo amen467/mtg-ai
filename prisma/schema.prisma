@@ -74,3 +74,21 @@ model Ruling {
   @@index([cardId])
   @@index([publishedAt])
 }
+
+model ComprehensiveRule {
+  id          String   @id
+  ruleNumber  String   @unique
+  section     String?
+  title       String?
+  text        String
+  parentId    String?
+
+  parent      ComprehensiveRule?  @relation("RuleHierarchy", fields: [parentId], references: [id])
+  children    ComprehensiveRule[] @relation("RuleHierarchy")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([section])
+  @@index([parentId])
+}
