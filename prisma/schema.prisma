@@ -32,6 +32,7 @@ model Card {
   scryfallUri      String?
 
   printings        Printing[] @relation("CardPrintings")
+  rulings Ruling[] @relation("CardRulings")
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -57,4 +58,19 @@ model Printing {
   @@unique([setCode, collectorNumber])
   @@index([cardId])
   @@index([setCode])
+}
+
+model Ruling {
+  id          String   @id
+  cardId      String
+  source      String
+  publishedAt DateTime
+  comment     String
+
+  card        Card     @relation("CardRulings", fields: [cardId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+
+  @@index([cardId])
+  @@index([publishedAt])
 }
