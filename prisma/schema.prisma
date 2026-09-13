@@ -92,3 +92,19 @@ model ComprehensiveRule {
   @@index([section])
   @@index([parentId])
 }
+
+model ReleaseNote {
+  id           String   @id
+  setCode      String?
+  releaseDate  DateTime?
+  cardName     String?
+  text         String
+  sourceUrl    String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([setCode])
+  @@index([cardName])
+  @@index([releaseDate])
+}
