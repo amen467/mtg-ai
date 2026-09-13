@@ -31,8 +31,30 @@ model Card {
   imageUri         String?
   scryfallUri      String?
 
+  printings        Printing[] @relation("CardPrintings")
+
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
   @@index([name])
+}
+
+model Printing {
+  id            String   @id
+  cardId        String
+  setCode       String
+  setName       String
+  collectorNumber String
+  rarity        String?
+  releasedAt    DateTime?
+  imageUri      String?
+  scryfallUri   String?
+
+  card          Card @relation("CardPrintings", fields: [cardId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+
+  @@unique([setCode, collectorNumber])
+  @@index([cardId])
+  @@index([setCode])
 }
